@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ExternalBookApiService {
 
-    private static final String API_URL = "https://openlibrary.org/search.json?title=";
+    private static final String API_URL = "https://gutendex.com/books?search=";
 
     public Book fetchBook(String title) {
         HttpClient client = HttpClient.newHttpClient();
@@ -20,9 +20,9 @@ public class ExternalBookApiService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String body = response.body();
 
-            // Parsing manual simples do JSON para extrair título e autor
+            // Parsing simples para extrair título e autor do JSON (primeiro resultado)
             String bookTitle = extractField(body, "\"title\":\"");
-            String authorName = extractField(body, "\"author_name\":[\"");
+            String authorName = extractField(body, "\"name\":\"");
 
             if (bookTitle.isEmpty()) bookTitle = title;
             if (authorName.isEmpty()) authorName = "Autor Desconhecido";
